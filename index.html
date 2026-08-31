@@ -263,7 +263,7 @@
         // KẾT NỐI ÂM THANH LOCAL
         const bgMusic = new Audio('./nhacnen.mp3');
         bgMusic.loop = true; // Lặp lại nhạc nền
-        bgMusic.volume = 0.4; // Chỉnh âm lượng nhạc nền hơi nhỏ lại
+        bgMusic.volume = 0.2; // Chỉnh âm lượng nhạc nền hơi nhỏ lại
 
         const correctSound = new Audio('./dung.mp3');
         const wrongSound = new Audio('./sai.mp3');
@@ -278,25 +278,42 @@
             startTime: null, timerInterval: null
         };
 
-        function startGame() {
-            document.getElementById('modal-start').classList.remove('active');
-            
-            // Phát nhạc nền
-            bgMusic.play().catch(e => console.log("Trình duyệt chặn autoplay audio"));
+       function startGame() {
+    document.getElementById('modal-start').classList.remove('active');
+    
+    // 1. Phát nhạc nền
+    bgMusic.play().catch(e => console.log("Trình duyệt chặn autoplay"));
 
-            gameState.originalSentences = gameText.match(/[^.!?]+[.!?]+/g) || [gameText];
-            gameState.originalSentences = gameState.originalSentences.map(s => s.trim());
-            gameState.shuffledSentences = [...gameState.originalSentences]
-                .map((content, id) => ({ content, id }))
-                .sort(() => Math.random() - 0.5);
-
-            gameState.currentIndex = 0; gameState.score = 0; gameState.combo = 0; gameState.xp = 0;
-            updateStats(); renderGame();
-            
-            clearInterval(gameState.timerInterval);
-            gameState.startTime = Date.now();
-            gameState.timerInterval = setInterval(updateTimer, 1000);
+    // 2. THỦ THUẬT CHO MOBILE: "Đánh thức" tất cả âm thanh hiệu ứng ngay khi bấm nút
+    let sounds = [correctSound, wrongSound, winSound];
+    sounds.forEach(sound => {
+        sound.volume = 0; // Tạm tắt tiếng để không phát ra loa lúc này
+        let playPromise = sound.play();
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                sound.pause();
+                sound.currentTime = 0;
+                sound.volume = 1; // Mở lại âm lượng bình thường (1.0 = 100%)
+            }).catch(error => {
+                console.log("Lỗi đánh thức âm thanh trên mobile:", error);
+            });
         }
+    });
+
+    // 3. Khởi tạo dữ liệu trò chơi
+    gameState.originalSentences = gameText.match(/[^.!?]+[.!?]+/g) || [gameText];
+    gameState.originalSentences = gameState.originalSentences.map(s => s.trim());
+    gameState.shuffledSentences = [...gameState.originalSentences]
+        .map((content, id) => ({ content, id }))
+        .sort(() => Math.random() - 0.5);
+
+    gameState.currentIndex = 0; gameState.score = 0; gameState.combo = 0; gameState.xp = 0;
+    updateStats(); renderGame();
+    
+    clearInterval(gameState.timerInterval);
+    gameState.startTime = Date.now();
+    gameState.timerInterval = setInterval(updateTimer, 1000);
+}
 
         function renderGame() {
             const previewBox = document.getElementById('preview-text');
