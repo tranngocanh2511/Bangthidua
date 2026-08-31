@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dino Park - Sentence Unjumble Adventure</title>
+    <title>Dino Park - Thám Hiểm Cổ Đại</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -17,375 +17,174 @@
             --white: #ffffff;
         }
 
-        * {
-            box-sizing: border-box;
-            font-family: 'Nunito', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; font-family: 'Nunito', sans-serif; margin: 0; padding: 0; }
 
         body {
             background: linear-gradient(135deg, #d4edda, #c8e6c9);
-            background-attachment: fixed;
-            color: var(--deep-brown);
-            overflow-x: hidden;
-            touch-action: manipulation;
-            min-height: 100vh;
+            background-attachment: fixed; color: var(--deep-brown);
+            overflow-x: hidden; touch-action: manipulation; min-height: 100vh;
         }
 
         body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: radial-gradient(var(--lime-green) 15%, transparent 16%),
                               radial-gradient(var(--egg-yellow) 15%, transparent 16%);
-            background-size: 60px 60px;
-            background-position: 0 0, 30px 30px;
-            opacity: 0.15;
-            z-index: -1;
+            background-size: 60px 60px; background-position: 0 0, 30px 30px;
+            opacity: 0.15; z-index: -1;
         }
 
         header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 4px solid var(--dino-green);
-            border-radius: 0 0 30px 30px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+            padding: 15px 30px; display: flex; justify-content: space-between;
+            align-items: center; border-bottom: 4px solid var(--dino-green);
+            border-radius: 0 0 30px 30px; position: sticky; top: 0; z-index: 100;
             box-shadow: 0 6px 20px rgba(106, 176, 76, 0.2);
         }
 
-        .stats-group {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
+        .stats-group { display: flex; gap: 20px; align-items: center; }
 
         .stat-item {
-            font-weight: 900;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--egg-yellow);
-            padding: 6px 16px;
-            border-radius: 20px;
-            border: 3px solid var(--earth-orange);
-            color: var(--deep-brown);
+            font-weight: 900; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;
+            background: var(--egg-yellow); padding: 6px 16px; border-radius: 20px;
+            border: 3px solid var(--earth-orange); color: var(--deep-brown);
             box-shadow: 0 4px 0 var(--earth-orange);
         }
 
         .xp-container {
-            width: 140px;
-            height: 18px;
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 3px solid var(--dino-green);
+            width: 140px; height: 18px; background: #fff; border-radius: 10px;
+            overflow: hidden; border: 3px solid var(--dino-green);
         }
 
         #xp-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--lime-green), var(--dino-green));
+            height: 100%; width: 0%; background: linear-gradient(90deg, var(--lime-green), var(--dino-green));
             transition: width 0.3s ease;
         }
 
-        .btn-settings {
-            background: var(--earth-orange);
-            border: 3px solid var(--deep-brown);
-            color: var(--white);
-            font-size: 1.3rem;
-            cursor: pointer;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 5px 0 var(--deep-brown);
-            transition: all 0.1s;
-        }
-
-        .btn-settings:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 var(--deep-brown);
-        }
-
         .game-container {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 30px;
-            padding: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px;
+            padding: 30px; max-width: 1200px; margin: 0 auto;
         }
 
         .hint-card {
-            background: rgba(255, 255, 255, 0.92);
-            padding: 25px;
-            border-radius: 35px;
-            border: 5px solid var(--dino-green);
-            box-shadow: 0 10px 30px rgba(48, 51, 107, 0.15);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            background: rgba(255, 255, 255, 0.92); padding: 25px; border-radius: 35px;
+            border: 5px solid var(--dino-green); box-shadow: 0 10px 30px rgba(48, 51, 107, 0.15);
+            display: flex; flex-direction: column; gap: 20px;
         }
 
         .hint-image-box {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #f1f8e9;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 4px solid var(--lime-green);
+            width: 100%; aspect-ratio: 16/9; background: #f1f8e9; border-radius: 20px;
+            overflow: hidden; border: 4px solid var(--lime-green);
             box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
         }
 
-        .hint-image-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .hint-image-box img { width: 100%; height: 100%; object-fit: cover; }
 
         .preview-box {
-            background: #f9fbe7;
-            padding: 20px;
-            border-radius: 20px;
-            border: 3px dashed var(--earth-orange);
-            min-height: 150px;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            color: var(--deep-brown);
+            background: #f9fbe7; padding: 20px; border-radius: 20px;
+            border: 3px dashed var(--earth-orange); min-height: 150px;
+            line-height: 1.8; font-size: 1.1rem; color: var(--deep-brown);
         }
 
         .preview-sentence {
-            display: inline;
-            margin-right: 5px;
-            transition: all 0.5s;
-            font-weight: 800;
+            display: inline; margin-right: 5px; transition: all 0.5s; font-weight: 800;
         }
 
         .preview-sentence.hidden {
-            color: transparent;
-            background: rgba(240, 147, 43, 0.2);
-            border-radius: 8px;
-            user-select: none;
-            filter: blur(4px);
+            color: transparent; background: rgba(240, 147, 43, 0.2);
+            border-radius: 8px; user-select: none; filter: blur(4px);
         }
 
-        .play-area {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
+        .play-area { display: flex; flex-direction: column; gap: 25px; }
 
-        .drop-zones {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+        .drop-zones { display: flex; flex-direction: column; gap: 15px; }
 
         .drop-zone {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 25px;
-            min-height: 65px;
-            display: flex;
-            align-items: center;
-            padding: 10px 20px 10px 65px;
-            position: relative;
-            border: 3px dashed var(--dino-green);
+            background: rgba(255, 255, 255, 0.7); border-radius: 25px; min-height: 65px;
+            display: flex; align-items: center; padding: 10px 20px 10px 65px;
+            position: relative; border: 3px dashed var(--dino-green);
         }
 
         .drop-zone::before {
-            content: attr(data-index);
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--earth-orange);
-            color: white;
-            width: 38px;
-            height: 38px;
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 900;
-            font-size: 1.1rem;
-            border: 2px solid var(--deep-brown);
+            content: attr(data-index); position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%); background: var(--earth-orange); color: white;
+            width: 38px; height: 38px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: 900; font-size: 1.1rem; border: 2px solid var(--deep-brown);
             box-shadow: 0 3px 0 var(--deep-brown);
         }
 
         .card-pool {
-            background: rgba(255, 255, 255, 0.85);
-            padding: 25px;
-            border-radius: 35px;
-            border: 5px solid var(--earth-orange);
-            box-shadow: 0 10px 30px rgba(240, 147, 43, 0.2);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            min-height: 180px;
-            align-content: flex-start;
+            background: rgba(255, 255, 255, 0.85); padding: 25px; border-radius: 35px;
+            border: 5px solid var(--earth-orange); box-shadow: 0 10px 30px rgba(240, 147, 43, 0.2);
+            display: flex; flex-wrap: wrap; gap: 15px; min-height: 180px; align-content: flex-start;
         }
 
         .sentence-card {
-            background: var(--egg-yellow);
-            color: var(--deep-brown);
-            padding: 14px 22px;
-            border-radius: 20px;
-            font-weight: 900;
-            cursor: grab;
-            user-select: none;
-            border: 3px solid var(--earth-orange);
-            box-shadow: 0 6px 0 var(--earth-orange);
-            position: relative;
-            transition: transform 0.1s, box-shadow 0.1s;
+            background: var(--egg-yellow); color: var(--deep-brown); padding: 14px 22px;
+            border-radius: 20px; font-weight: 900; cursor: grab; user-select: none;
+            border: 3px solid var(--earth-orange); box-shadow: 0 6px 0 var(--earth-orange);
+            position: relative; transition: transform 0.1s, box-shadow 0.1s;
         }
 
         .sentence-card:active {
-            cursor: grabbing;
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 var(--earth-orange);
+            cursor: grabbing; transform: translateY(4px); box-shadow: 0 2px 0 var(--earth-orange);
         }
 
-        .sentence-card.dragging {
-            opacity: 0.5;
-        }
+        .sentence-card.dragging { opacity: 0.5; }
 
         .sentence-card.correct {
-            background: var(--lime-green);
-            color: var(--deep-brown);
-            border-color: var(--dino-green);
-            box-shadow: 0 6px 0 var(--dino-green);
-            cursor: default;
+            background: var(--lime-green); color: var(--deep-brown);
+            border-color: var(--dino-green); box-shadow: 0 6px 0 var(--dino-green); cursor: default;
         }
 
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(48, 51, 107, 0.7);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.3s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(48, 51, 107, 0.7); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; visibility: hidden; opacity: 0; transition: 0.3s;
         }
 
-        .modal-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
+        .modal-overlay.active { visibility: visible; opacity: 1; }
 
         .modal-content {
-            background: var(--white);
-            padding: 40px;
-            border-radius: 40px;
-            width: 90%;
-            max-width: 550px;
-            border: 6px solid var(--dino-green);
-            box-shadow: 0 15px 0 var(--earth-orange);
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
+            background: var(--white); padding: 40px; border-radius: 40px;
+            width: 90%; max-width: 550px; border: 6px solid var(--dino-green);
+            box-shadow: 0 15px 0 var(--earth-orange); position: relative;
+            max-height: 90vh; overflow-y: auto; text-align: center;
         }
 
         h2 {
-            margin-bottom: 20px;
-            color: var(--dino-green);
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: 800;
-            margin-bottom: 8px;
-            color: var(--deep-brown);
-        }
-
-        textarea, input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            border-radius: 20px;
-            background: #f1f8e9;
-            border: 3px solid var(--lime-green);
-            color: var(--deep-brown);
-            font-size: 1.1rem;
-            outline: none;
-        }
-
-        .file-input-wrapper {
-            display: flex;
-            gap: 10px;
-            align-items: center;
+            margin-bottom: 20px; color: var(--dino-green); font-size: 2.2rem;
+            font-weight: 900; text-transform: uppercase;
         }
 
         .btn-primary {
-            background: var(--dino-green);
-            color: white;
-            border: 3px solid var(--deep-brown);
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-weight: 900;
-            font-size: 1.2rem;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 6px 0 var(--deep-brown);
-            margin-top: 10px;
-            text-transform: uppercase;
-            transition: all 0.1s;
+            background: var(--dino-green); color: white; border: 3px solid var(--deep-brown);
+            padding: 15px 30px; border-radius: 25px; font-weight: 900; font-size: 1.2rem;
+            cursor: pointer; width: 100%; box-shadow: 0 6px 0 var(--deep-brown);
+            margin-top: 10px; text-transform: uppercase; transition: all 0.1s;
         }
 
-        .btn-primary:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 var(--deep-brown);
-        }
-
-        .victory-card {
-            text-align: center;
-        }
+        .btn-primary:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--deep-brown); }
 
         .final-summary {
-            background: #f1f8e9;
-            padding: 20px;
-            border-radius: 20px;
-            margin: 20px 0;
-            border: 3px dashed var(--dino-green);
+            background: #f1f8e9; padding: 20px; border-radius: 20px;
+            margin: 20px 0; border: 3px dashed var(--dino-green);
         }
 
-        .leaderboard {
-            margin-top: 20px;
-            text-align: left;
-            max-height: 250px;
-            overflow-y: auto;
-        }
+        .leaderboard { margin-top: 20px; text-align: left; max-height: 250px; overflow-y: auto; }
 
         .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 15px;
-            background: #f9fbe7;
-            margin-bottom: 8px;
-            border-radius: 12px;
-            border: 2px solid var(--lime-green);
-            font-weight: 800;
-            color: var(--deep-brown);
+            display: flex; justify-content: space-between; padding: 10px 15px;
+            background: #f9fbe7; margin-bottom: 8px; border-radius: 12px;
+            border: 2px solid var(--lime-green); font-weight: 800; color: var(--deep-brown);
+        }
+
+        .form-group { margin-bottom: 20px; text-align: left; }
+        input[type="text"] {
+            width: 100%; padding: 15px; border-radius: 20px; background: #f1f8e9;
+            border: 3px solid var(--lime-green); color: var(--deep-brown);
+            font-size: 1.1rem; outline: none; font-weight: 800;
         }
 
         @keyframes dinoStomp {
@@ -398,9 +197,7 @@
         }
         .shake { animation: dinoStomp 0.4s ease-in-out; }
 
-        @media (max-width: 850px) {
-            .game-container { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 850px) { .game-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -408,149 +205,90 @@
     <header>
         <div class="stats-group">
             <div class="stat-item">🦕 LVL <span id="lvl-badge">1</span></div>
-            <div class="xp-container"><div id="xp-bar"></div></div>
+            
         </div>
         <div class="stats-group">
             <div class="stat-item">⏱️ <span id="timer">00:00</span></div>
             <div class="stat-item">🦴 <span id="score">0</span></div>
             <div class="stat-item">🔥 <span id="combo">0</span></div>
-            <button class="btn-settings" onclick="openSettings()" title="Cài đặt ốc đảo">🐾</button>
         </div>
     </header>
 
     <main class="game-container">
         <section class="hint-card">
             <div class="hint-image-box">
-                <img id="hint-img" src="" alt="Hóa thạch khủng long">
+                <!-- Tải ảnh hinh01.jpg từ thư mục máy tính -->
+                <img id="hint-img" src="./hinh01.jpg" alt="Hóa thạch khủng long">
             </div>
-            <div class="preview-box" id="preview-text">
-            </div>
+            <div class="preview-box" id="preview-text"></div>
         </section>
 
         <section class="play-area">
-            <div class="drop-zones" id="drop-zones">
-            </div>
-            <div class="card-pool" id="card-pool">
-            </div>
+            <div class="drop-zones" id="drop-zones"></div>
+            <div class="card-pool" id="card-pool"></div>
         </section>
     </main>
 
-    <div id="modal-settings" class="modal-overlay">
+    <!-- Màn hình chào mừng (Bắt buộc để kích hoạt âm thanh trên trình duyệt) -->
+    <div id="modal-start" class="modal-overlay active">
         <div class="modal-content">
-            <h2>Công Viên Khủng Long 🦖</h2>
-            <div class="form-group">
-                <label>Hành trình thám hiểm (Đoạn văn):</label>
-                <textarea id="input-text" rows="5" placeholder="Nhập các câu cách nhau bằng dấu chấm..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Bản đồ hóa thạch / Ảnh:</label>
-                <div class="file-input-wrapper">
-                    <input type="text" id="input-img-url" placeholder="Dán link ảnh (URL)..." style="flex:1">
-                    <span style="font-weight:800">HOẶC</span>
-                    <input type="file" id="input-img-file" accept="image/*" style="width: 100px;">
-                </div>
-            </div>
-            <button class="btn-primary" onclick="startGame()">VÀO CÔNG VIÊN! 🌋</button>
+            <h2>CÔNG VIÊN KHỦNG LONG 🦖</h2>
+            <p style="font-weight: 800; margin-bottom: 20px; font-size: 1.1rem;">Sắp xếp các mảnh hóa thạch để khôi phục câu chuyện cổ đại!</p>
+            <button class="btn-primary" onclick="startGame()">BẮT ĐẦU CHƠI 🌋</button>
         </div>
     </div>
 
+    <!-- Màn hình Chiến thắng -->
     <div id="modal-victory" class="modal-overlay">
-        <div class="modal-content victory-card">
+        <div class="modal-content">
             <h2>HOÀN THÀNH KHAI QUẬT! 🦕🎉</h2>
-            <p style="font-weight:800; color:var(--deep-brown);">Bạn đã khôi phục thành công khu bảo tồn khủng long!</p>
-            
             <div class="final-summary">
-                <img id="final-img" src="" style="width:100%; border-radius:15px; margin-bottom:15px; display:none; border:3px solid var(--dino-green);">
+                <img id="final-img" src="./hinh01.jpg" style="width:100%; border-radius:15px; margin-bottom:15px; border:3px solid var(--dino-green);">
                 <p id="final-text" style="font-weight:800; line-height:1.6; color:var(--deep-brown);"></p>
             </div>
 
             <div class="form-group">
                 <input type="text" id="player-name" placeholder="Tên nhà khảo cổ học...">
-                <button class="btn-primary" onclick="saveScore()">LƯU HỒ SƠ KHẢO CỔ</button>
+                <button class="btn-primary" onclick="saveScore()">LƯU ĐIỂM SỐ</button>
             </div>
-
-            <div class="leaderboard" id="leaderboard">
-                <!-- Bảng vàng sẽ tải từ Google Sheets -->
-            </div>
-            
-            <button class="btn-primary" style="background:var(--earth-orange);" onclick="location.reload()">QUAY VỀ TRẠI CHÍNH 🏕️</button>
+            <div class="leaderboard" id="leaderboard"></div>
+            <button class="btn-primary" style="background:var(--earth-orange);" onclick="location.reload()">CHƠI LẠI TỪ ĐẦU 🏕️</button>
         </div>
     </div>
 
     <script>
-        // DÁN ĐƯỜNG LINK GOOGLE APPS SCRIPT CỦA BẠN VÀO ĐÂY
+        // DÁN URL GOOGLE SHEETS VÀO ĐÂY NẾU BẠN VẪN MUỐN DÙNG BẢNG XẾP HẠNG
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzALpG3FfnI7va--Fp5om9NZNQENW7pD5fT_vzi0iJptHp8SZCmWZBGBYD_P3exbCTi/exec";
+
+        // KẾT NỐI ÂM THANH LOCAL
+        const bgMusic = new Audio('./nhacnen.mp3');
+        bgMusic.loop = true; // Lặp lại nhạc nền
+        bgMusic.volume = 0.4; // Chỉnh âm lượng nhạc nền hơi nhỏ lại
+
+        const correctSound = new Audio('./dung.mp3');
+        const wrongSound = new Audio('./sai.mp3');
+        const winSound = new Audio('./thang.mp3');
+
+        // NỘI DUNG VĂN BẢN (Cố định trong code)
+        const gameText = "Chú khủng long bạo chúa đang dạo bước qua thung lũng xanh mướt. Ánh nắng vàng rọi xuống những chiếc vảy khổng lồ của nó.";
 
         let gameState = {
             originalSentences: [], shuffledSentences: [],
             currentIndex: 0, score: 0, combo: 0, xp: 0,
-            startTime: null, timerInterval: null, imageUrl: ""
-        };
-
-        const defaultText = "Chú khủng long bạo chúa đang dạo bước qua thung lũng xanh mướt. Ánh nắng vàng rọi xuống những chiếc vảy khổng lồ của nó. Một đàn khủng long cổ dài đang thong thả ăn lá cây trên cao. Tiếng gầm vang dội khắp cả khu rừng nguyên sinh cổ đại.";
-        const defaultImg = "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80";
-
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playDinoSound(type) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            if (type === 'correct') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-            } else {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(60, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-            }
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.3);
-        }
-
-        window.onload = () => {
-            document.getElementById('input-text').value = defaultText;
-            document.getElementById('input-img-url').value = defaultImg;
-            openSettings();
-        };
-
-        function openSettings() { document.getElementById('modal-settings').classList.add('active'); }
-
-        document.getElementById('input-img-file').onchange = function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    gameState.imageUrl = event.target.result;
-                    document.getElementById('input-img-url').value = "Đã nạp hóa thạch từ tệp";
-                };
-                reader.readAsDataURL(file);
-            }
+            startTime: null, timerInterval: null
         };
 
         function startGame() {
-            const text = document.getElementById('input-text').value.trim();
-            const url = document.getElementById('input-img-url').value.trim();
-            if (!text) return alert("Vui lòng cung cấp văn bản thám hiểm!");
+            document.getElementById('modal-start').classList.remove('active');
+            
+            // Phát nhạc nền
+            bgMusic.play().catch(e => console.log("Trình duyệt chặn autoplay audio"));
 
-            gameState.originalSentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+            gameState.originalSentences = gameText.match(/[^.!?]+[.!?]+/g) || [gameText];
             gameState.originalSentences = gameState.originalSentences.map(s => s.trim());
             gameState.shuffledSentences = [...gameState.originalSentences]
                 .map((content, id) => ({ content, id }))
                 .sort(() => Math.random() - 0.5);
-
-            if (gameState.imageUrl === "" || url !== "Đã nạp hóa thạch từ tệp") {
-                gameState.imageUrl = url || defaultImg;
-            }
-            document.getElementById('hint-img').src = gameState.imageUrl;
 
             gameState.currentIndex = 0; gameState.score = 0; gameState.combo = 0; gameState.xp = 0;
             updateStats(); renderGame();
@@ -558,9 +296,6 @@
             clearInterval(gameState.timerInterval);
             gameState.startTime = Date.now();
             gameState.timerInterval = setInterval(updateTimer, 1000);
-
-            document.getElementById('modal-settings').classList.remove('active');
-            playDinoSound('correct');
         }
 
         function renderGame() {
@@ -621,12 +356,18 @@
                 gameState.combo++; gameState.score += 10 * gameState.combo; gameState.xp += 20;
                 gameState.currentIndex++;
                 updateStats();
-                playDinoSound('correct');
+                
+                // Phát tiếng Đúng
+                correctSound.currentTime = 0;
+                correctSound.play();
 
                 if (gameState.currentIndex === gameState.originalSentences.length) endGame();
             } else {
                 gameState.combo = 0; updateStats();
-                playDinoSound('wrong');
+                
+                // Phát tiếng Sai và rung màn hình
+                wrongSound.currentTime = 0;
+                wrongSound.play();
                 document.body.classList.add('shake');
                 setTimeout(() => document.body.classList.remove('shake'), 400);
             }
@@ -668,7 +409,7 @@
             const lvl = Math.floor(gameState.xp / 100) + 1;
             const xpInLevel = gameState.xp % 100;
             document.getElementById('lvl-badge').textContent = lvl;
-            document.getElementById('xp-bar').style.width = xpInLevel + '%';
+            
         }
 
         function updateTimer() {
@@ -681,51 +422,38 @@
         function endGame() {
             clearInterval(gameState.timerInterval);
             
-            confetti({
-                particleCount: 180, spread: 90, origin: { y: 0.6 },
-                colors: ['#6ab04c', '#badc58', '#f0932b', '#ffbe76']
-            });
+            // Dừng nhạc nền, phát nhạc chiến thắng
+            bgMusic.pause();
+            winSound.currentTime = 0;
+            winSound.play();
+
+            confetti({ particleCount: 180, spread: 90, origin: { y: 0.6 }, colors: ['#6ab04c', '#badc58', '#f0932b', '#ffbe76'] });
 
             const victoryModal = document.getElementById('modal-victory');
-            document.getElementById('final-text').textContent = gameState.originalSentences.join(' ');
-            
-            if (gameState.imageUrl) {
-                const fImg = document.getElementById('final-img');
-                fImg.src = gameState.imageUrl;
-                fImg.style.display = 'block';
-            }
+            document.getElementById('final-text').textContent = gameText;
             victoryModal.classList.add('active');
             showLeaderboard();
         }
 
-        // --- FETCH API THAY THẾ CHO LOCAL STORAGE ---
         function saveScore() {
             const nameInput = document.getElementById('player-name');
             const name = nameInput.value || "Nhà khảo cổ ẩn danh";
             const btn = document.querySelector('.btn-primary[onclick="saveScore()"]');
             
             btn.textContent = "ĐANG LƯU...";
-            btn.disabled = true;
-            nameInput.disabled = true;
+            btn.disabled = true; nameInput.disabled = true;
 
             const formData = new FormData();
             formData.append('name', name);
             formData.append('score', gameState.score);
 
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                body: formData
-            })
+            fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData })
             .then(response => response.text())
-            .then(result => {
-                btn.textContent = "ĐÃ LƯU THÀNH CÔNG!";
-                showLeaderboard(); 
-            })
+            .then(result => { btn.textContent = "ĐÃ LƯU THÀNH CÔNG!"; showLeaderboard(); })
             .catch(error => {
                 console.error('Lỗi khi lưu điểm:', error);
                 btn.textContent = "LỖI LƯU ĐIỂM (BẤM THỬ LẠI)";
-                btn.disabled = false;
-                nameInput.disabled = false;
+                btn.disabled = false; nameInput.disabled = false;
             });
         }
 
@@ -737,16 +465,10 @@
             .then(response => response.json())
             .then(data => {
                 board.innerHTML = '<h3 style="color:var(--deep-brown); margin-bottom:10px;">🏆 Top Nhà Khảo Cổ (Live):</h3>';
-                
-                if(data.length === 0) {
-                    board.innerHTML += '<p>Chưa có nhà khảo cổ nào ghi danh.</p>';
-                    return;
-                }
-
+                if(data.length === 0) { board.innerHTML += '<p>Chưa có nhà khảo cổ nào ghi danh.</p>'; return; }
                 data.forEach((entry, i) => {
                     const date = new Date(entry.timestamp);
                     const timeStr = date.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
-
                     board.innerHTML += `
                         <div class="leaderboard-item">
                             <span>${i+1}. ${entry.name} <small style="color:#666; font-size:0.8em;">(${timeStr})</small></span>
@@ -755,10 +477,7 @@
                     `;
                 });
             })
-            .catch(error => {
-                console.error('Lỗi tải bảng xếp hạng:', error);
-                board.innerHTML = '<h3 style="color:var(--earth-orange);">Không thể tải Bảng Vàng lúc này.</h3>';
-            });
+            .catch(error => { board.innerHTML = '<h3 style="color:var(--earth-orange);">Không thể tải Bảng Vàng lúc này.</h3>'; });
         }
     </script>
 </body>
